@@ -3,13 +3,15 @@ const SpotifyWebApi = require('spotify-web-api-node');
 const express = require('express');
 const { json, response } = require('express');
 const app = express();
+const cors = require('cors');
+app.use(cors());
 const router = express.Router();
 const cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
 
     const spotifyApi = new SpotifyWebApi({
-        redirectUri: 'http://localhost:3000/callback',
+        redirectUri: 'http://localhost:5000/api/callback',
         clientId: '58cb403bae2240ff8af16de248d5020c',
         clientSecret: '569501fa826b4bd499753ff7b6325493'
     });
@@ -59,11 +61,7 @@ router.get('/home', async (req, res, next) => {
         const response = await spotifyApi.getMe();
         const data = response.body;
         //say hello to the user
-        res.send(`Hello ${data.display_name}!`);
-        //
-
-        // res.send(data.display_name);
-         
+        res.json(data);         
     } catch (err) {
         console.log(err);
         res.status(500).send(err.message);
@@ -76,12 +74,12 @@ router.get('/callback', async (req, res, next) => {
     try {
         const response = await spotifyApi.authorizationCodeGrant(code);
         res.cookie('access_token', response.body['access_token'], { maxAge: 900000, httpOnly: true });
-        res.redirect('/home');
+        res.redirect('/api/home');
     } catch (err) {
         console.log(err);
         res.status(500).send(err.message);
     }
 });
 
-app.use('/', router);
-app.listen(3000);
+app.use('/api', router);
+app.listen(5000);
