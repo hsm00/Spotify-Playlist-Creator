@@ -20,7 +20,9 @@
   "homepage": "https://github.com/hsm00/Spotify-Playlist-Creator#readme",
   "dependencies": {
     "axios": "^1.2.5",
+    "body-parser": "^1.20.1",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "spotify-web-api-node": "^5.0.2"
   },
