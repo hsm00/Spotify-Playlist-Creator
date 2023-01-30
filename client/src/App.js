@@ -1,24 +1,11 @@
-import React, { useState } from 'react';
+import "bootstrap/dist/css/bootstrap.min.css"
+import Login from "./Login"
+import Dashboard from "./Dashboard"
+
+const code = new URLSearchParams(window.location.search).get("code")
 
 function App() {
-  const [data, setData] = useState(null);
-
-  React.useEffect(() => {
-    fetch('/api/home')
-      .then(response => response.json())
-      .then(data => {
-        setData(data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
-
-  return (
-    <div>
-      {data && <p>Hello {data.display_name}</p>}
-    </div>
-  );
+  return code ? <Dashboard code={code} /> : <Login />
 }
 
-export default App;
+export default App
