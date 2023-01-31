@@ -14,7 +14,7 @@ export default function Dashboard({ code }) {
 
     return (
         <div>
-            <h1>{code}</h1>
+            <h1>Dashboard</h1>
         </div>
     );
 }
