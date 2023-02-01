@@ -21,21 +21,20 @@ export default function Dashboard({ code }) {//check if there is an access token
 
     spotifyApi.setAccessToken(accessToken)
 
+    
 
     useEffect(() => {
-        const fetchData = async () => {
-          if (!accessToken) return;
-         await spotifyApi.setAccessToken(accessToken);
-            
-          try {
-            const data = await spotifyApi.getMe();
-            console.log("Some information about the authenticated user", data.body);
-          } catch (err) {
-            console.log("Something went wrong!", err);
-          }
-        };
-        fetchData();
-      }, [accessToken]);
+        if (!accessToken) {
+        spotifyApi.setAccessToken(accessToken);
+        }
+        spotifyApi.getMe()
+        .then((data) => {
+            console.log('Some information about the authenticated user', data.body);
+        })
+        .catch((err) => {
+            console.log('Something went wrong!', err);
+        });
+    }, []);
 
     return (
         <div>
