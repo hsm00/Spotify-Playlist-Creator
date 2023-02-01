@@ -17,7 +17,6 @@ exports.getAccessToken = (req, res) => {
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
     })
-    console.log()
     spotifyApi.authorizationCodeGrant(code).then(data => {
         res.json({
             accessToken: data.body.access_token,
