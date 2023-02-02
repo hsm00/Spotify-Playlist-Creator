@@ -5,7 +5,8 @@ import useAuth from "./useAuth"
 import axios from 'axios';
 
 export default function Dashboard({ code }) {//check if there is an access token in local storage and if so, use it else use the access token from the useAuth hook 
-    const accessToken = useAuth(code);
+    const token = useAuth(code);
+    const [user, setUser] = useState([]);
     const [search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [playingTrack, setPlayingTrack] = useState();
@@ -19,26 +20,36 @@ export default function Dashboard({ code }) {//check if there is an access token
       redirectUri: 'http://localhost:3000'
     });
 
-    spotifyApi.setAccessToken(accessToken)
+    spotifyApi.setAccessToken(token);
 
     
 
     useEffect(() => {
-        if (!accessToken) {
-        spotifyApi.setAccessToken(accessToken);
+        if (!token) {
+        spotifyApi.setAccessToken(token);
         }
         spotifyApi.getMe()
         .then((data) => {
-            console.log('Some information about the authenticated user', data.body);
+            setUser({
+                name: data.body.display_name,
+                email: data.body.email,
+                followers: data.body.followers.total,
+                country: data.body.country,
+                image: data.body.images[0].url,
+                id: data.body.id
+            });
         })
         .catch((err) => {
             console.log('Something went wrong!', err);
         });
-    }, []);
+    }, [token]);
 
     return (
         <div>
             <h1>Dashboard</h1>
+            <ul> 
+               <li> {user.name} </li>  
+            </ul>
         </div>
     )
 }
