@@ -3,12 +3,12 @@ import axios from 'axios';
 
 export default function useAuth(code) {
     var storedAccessToken = window.localStorage.getItem("accessToken");
-    const [accessToken, setAccessToken] = useState(storedAccessToken);
-    const [refreshToken, setRefreshToken] = useState();
-    const [expiresIn, setExpiresIn] = useState(window.localStorage.getItem("expiresIn"));
+    const [accessToken, setAccessToken] = useState(storedAccessToken ? storedAccessToken : "");
+    const [refreshToken, setRefreshToken] = useState((window.localStorage.getItem("refreshToken")? window.localStorage.getItem("refreshToken") : "")) ;
+    const [expiresIn, setExpiresIn] = useState(window.localStorage.getItem("expiresIn") ? window.localStorage.getItem("expiresIn") : "");
 
     useEffect(() => {
-        if(accessToken) return
+        if(refreshToken) return
         axios.post('http://localhost:3001/login', {
             code, 
             })
@@ -27,22 +27,22 @@ export default function useAuth(code) {
     }, [code])
 
     useEffect(() => {
-        if (!refreshToken || !expiresIn || !accessToken) return
-        const interval = setInterval(() => {
-            axios.post('http://localhost:3001/refresh', {
-                refreshToken,
-            }).then(res => {
-                setAccessToken(res.data.accessToken)
-                setExpiresIn(res.data.expiresIn)
-                window.localStorage.setItem("accessToken", res.data.accessToken);
-                console.log('refreshToken called')
-            }).catch((err) => {
-                console.log(err)
-                window.location = '/';   
-            })
-        }, (expiresIn - 60) * 1000)
-        return () => clearInterval(interval)
-    }, [refreshToken, expiresIn, accessToken])
-    console.log(accessToken)
+    if (!refreshToken || !expiresIn) return
+    const interval = setInterval(() => {
+        axios.post('http://localhost:3001/refresh', {
+            refreshToken,
+        }).then(res => {
+            setAccessToken(res.data.accessToken)
+            setExpiresIn(res.data.expiresIn)
+            window.localStorage.setItem("accessToken", res.data.accessToken);
+            window.localStorage.setItem("expiresIn", res.data.expiresIn);
+        }).catch((err) => {
+            console.log(err)
+            window.location = '/';   
+        })
+    }, (expiresIn - 60) * 1000)
+    return () => clearInterval(interval)
+}, [refreshToken, expiresIn])
+
     return accessToken
 }
