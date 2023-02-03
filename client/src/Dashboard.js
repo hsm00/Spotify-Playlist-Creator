@@ -4,7 +4,7 @@ import SpotifyWebApi from 'spotify-web-api-node';
 import useAuth from "./useAuth"
 import axios from 'axios';
 
-export default function Dashboard({ code }) {//check if there is an access token in local storage and if so, use it else use the access token from the useAuth hook 
+export default function Dashboard({ code }) {
     const token = useAuth(code);
     const [user, setUser] = useState([]);
     const [search, setSearch] = useState("");
@@ -17,31 +17,34 @@ export default function Dashboard({ code }) {//check if there is an access token
     let spotifyApi = new SpotifyWebApi({
       clientId: '58cb403bae2240ff8af16de248d5020c',
       clientSecret: '569501fa826b4bd499753ff7b6325493',
-      redirectUri: 'http://localhost:3000'
+      redirectUri: 'http://localhost:3000/localhost:3000/dashboard'
     });
 
-    spotifyApi.setAccessToken(token);
+    // spotifyApi.setAccessToken(token);
 
     useEffect(() => {
-        if (!token) {
-        spotifyApi.setAccessToken(token);
-        }
-        spotifyApi.getMe()
-        .then((data) => {
+        const fetchData = async () => {
+          await spotifyApi.setAccessToken(token);
+          if (!token) return;
+          try {
+            const data = await spotifyApi.getMe();
             setUser({
-                name: data.body.display_name,
-                email: data.body.email,
-                followers: data.body.followers.total,
-                country: data.body.country,
-                image: data.body.images[0].url,
-                id: data.body.id
+              name: data.body.display_name,
+              email: data.body.email,
+              followers: data.body.followers.total,
+              country: data.body.country,
+              image: data.body.images[0].url,
+              id: data.body.id
             });
-        })
-        .catch((err) => {
+          } catch (err) {
             console.log('Something went wrong!', err);
-        });
-    }, [token]);
-
+          }
+        };
+    
+        fetchData();
+      }, [token]);
+      
+      
     return (
         <div>
             <h1>Dashboard</h1>
