@@ -8,6 +8,7 @@ const app = express()
 
 app.use(cors())
 app.use(bodyParser.json())
+
 // /login
 exports.getAccessToken = (req, res) => {
     const code = req.body.code;
