@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import SpotifyWebApi from 'spotify-web-api-node';
 import useAuth from "./useAuth"
 import axios from 'axios';
+import './index.css';
 
 export default function Dashboard({ code }) {//check if there is an access token in local storage and if so, use it else use the access token from the useAuth hook 
     const accessToken = useAuth(code);
@@ -11,7 +12,6 @@ export default function Dashboard({ code }) {//check if there is an access token
     const [playingTrack, setPlayingTrack] = useState();
     const [lyrics, setLyrics] = useState("");
     var SpotifyWebApi = require('spotify-web-api-node');
-
     // credentials are optional
     let spotifyApi = new SpotifyWebApi({
       clientId: '58cb403bae2240ff8af16de248d5020c',
@@ -38,7 +38,12 @@ export default function Dashboard({ code }) {//check if there is an access token
 
     return (
         <div>
+<<<<<<< Updated upstream
             <h1>Dashboard</h1>
+=======
+            <h1> Hello {user.name}</h1>
+            
+>>>>>>> Stashed changes
         </div>
     )
 }
