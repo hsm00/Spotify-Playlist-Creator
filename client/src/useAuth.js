@@ -1,48 +1,61 @@
-import { useState, useEffect } from 'react';
 import axios from 'axios';
-
-export default function useAuth(code) {
-    var storedAccessToken = window.localStorage.getItem("accessToken");
-    const [accessToken, setAccessToken] = useState(storedAccessToken ? storedAccessToken : "");
-    const [refreshToken, setRefreshToken] = useState((window.localStorage.getItem("refreshToken")? window.localStorage.getItem("refreshToken") : "")) ;
-    const [expiresIn, setExpiresIn] = useState(window.localStorage.getItem("expiresIn") ? window.localStorage.getItem("expiresIn") : "");
+import jwt_decode from 'jwt-decode';
+import { useState, useEffect } from 'react';
+export default function useAuth(code) { 
+    const [refreshToken, setRefreshToken] = useState(sessionStorage.getItem('refreshToken')? sessionStorage.getItem('refreshToken') : '');
+    const [token, setToken] = useState(sessionStorage.getItem('accessToken')? sessionStorage.getItem('accessToken') : '');
+    const [tokenExpiryTimestamp, setTokenExpiryTimestamp] = useState(new Date(sessionStorage.getItem('expiration')) ? new Date(sessionStorage.getItem('expiration')) : '');
 
     useEffect(() => {
-        if(refreshToken) return
+        if (!code) return;
+        if (token) return;
         axios.post('http://localhost:3001/login', {
             code, 
             })
-            .then(res => {
-                setAccessToken(res.data.accessToken)
-                setRefreshToken(res.data.refreshToken)
-                setExpiresIn(res.data.expiresIn)
-                console.log(res.data)
-                window.localStorage.setItem("accessToken", res.data.accessToken);
-                window.localStorage.setItem("refreshToken", res.data.refreshToken);
-                window.localStorage.setItem("expiresIn", res.data.expiresIn);
-            }).catch((err) => {
-                console.log(err)
+            .then(response => {
+                // setToken(response.data.token);
+                const decodedToken = jwt_decode(response.data.token);
+                setRefreshToken(decodedToken.refreshToken);
+                setToken(decodedToken.accessToken)
+                sessionStorage.setItem('refreshToken', decodedToken.refreshToken);
+                sessionStorage.setItem('accessToken', decodedToken.accessToken);
+
+                const expiration = new Date()
+                expiration.setHours(expiration.getHours() + 1);
+                sessionStorage.setItem('expiration', expiration);
+
+                console.log('token set');
+
+            }).catch(error => {
+                console.log(error);
                 // window.location = '/';
-            })
-    }, [code])
+            });
+    }, [code]);
 
     useEffect(() => {
-    if (!refreshToken || !expiresIn) return
-    const interval = setInterval(() => {
-        axios.post('http://localhost:3001/refresh', {
+        const currentTime = new Date();
+        if (tokenExpiryTimestamp > currentTime) return;
+          // Token has expired, request new one
+          axios.post('http://localhost:3001/refresh', {
             refreshToken,
-        }).then(res => {
-            setAccessToken(res.data.accessToken)
-            setExpiresIn(res.data.expiresIn)
-            window.localStorage.setItem("accessToken", res.data.accessToken);
-            window.localStorage.setItem("expiresIn", res.data.expiresIn);
-        }).catch((err) => {
-            console.log(err)
-            window.location = '/';   
-        })
-    }, (expiresIn - 60) * 1000)
-    return () => clearInterval(interval)
-}, [refreshToken, expiresIn])
+          })
+          .then(response => {
+            // store token in local storage
+            const decodedToken = jwt_decode(response.data.token);
+            sessionStorage.setItem('accessToken', decodedToken.accessToken);
+        
+            const expiration = new Date();
+            expiration.setHours(expiration.getHours() + 1);
+            sessionStorage.setItem('expiration', expiration);
+            
+            console.log('Token refreshed');
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }, []);
+      
 
-    return accessToken
-}
+    return token; // return token to be used in other components
+
+};
