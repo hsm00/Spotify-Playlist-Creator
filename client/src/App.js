@@ -3,15 +3,12 @@ import "./index.css"
 
 import Login from "./Login"
 import Dashboard from "./Dashboard"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 const code = new URLSearchParams(window.location.search).get("code")
 
 function App() {
-<<<<<<< Updated upstream
-  return code ? <Dashboard code={code} /> : <Login />
-=======
   return (
-    
     <BrowserRouter>
         <Routes>
         {code ? (
@@ -26,7 +23,6 @@ function App() {
 
     // code ? <Dashboard code={code} /> : <Login />
   )
->>>>>>> Stashed changes
 }
 
 export default App
