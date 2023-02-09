@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css"
 import "./index.css"
 
+
 import Login from "./Login"
 import Dashboard from "./Dashboard"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
@@ -17,6 +18,7 @@ function App() {
           ) : (
             <Route path="/dashboard" element={<Dashboard />} />
             )}
+          <Route  path="/dashboard/:id" element={<Dashboard />} />
           <Route path="/" element={<Login />} />
         </Routes>
       </div>
