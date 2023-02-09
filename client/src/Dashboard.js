@@ -1,3 +1,5 @@
+import Navbar from './components/Nav';
+import Sidebar from './components/Sidebar';
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import SpotifyWebApi from 'spotify-web-api-node';
@@ -12,6 +14,7 @@ export default function Dashboard({ code }) {
     const [searchResults, setSearchResults] = useState([]);
     const [playingTrack, setPlayingTrack] = useState();
     const [lyrics, setLyrics] = useState("");
+
     var SpotifyWebApi = require('spotify-web-api-node');
     // credentials are optional
     let spotifyApi = new SpotifyWebApi({
@@ -20,7 +23,7 @@ export default function Dashboard({ code }) {
       redirectUri: 'http://localhost:3000/localhost:3000/dashboard'
     });
 
-    // spotifyApi.setAccessToken(token);
+    spotifyApi.setAccessToken(token);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,10 +47,11 @@ export default function Dashboard({ code }) {
         fetchData();
       }, [token]);
       
-      
     return (
-        <div>
-            <h1> Hello {user.name}</h1>  
+        <div className='flex bg-gradient-to-b from-green-900 via-black to-black h-screen'>
+            <Sidebar />
+            {/* <Navbar user={user}/> */}
+            {/* <h1 className='container mx-auto'> Hello {user.name}</h1>   */}
         </div>
     )
 }
