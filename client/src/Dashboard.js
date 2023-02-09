@@ -6,10 +6,16 @@ import SpotifyWebApi from 'spotify-web-api-node';
 import useAuth from "./useAuth"
 import axios from 'axios';
 import './index.css';
+import { useLocation } from 'react-router-dom';
+
+
 
 export default function Dashboard({ code }) {
     const token = useAuth(code);
     const [user, setUser] = useState([]);
+    const [playlists, setPlaylists] = useState([]);
+    const [selectedPlaylist, setSelectedPlaylist] = useState();
+    const location = useLocation();
     const [search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [playingTrack, setPlayingTrack] = useState();
@@ -31,7 +37,7 @@ export default function Dashboard({ code }) {
           if (!token) return;
           try {
             const data = await spotifyApi.getMe();
-            setUser({
+             setUser({
               name: data.body.display_name,
               email: data.body.email,
               followers: data.body.followers.total,
@@ -46,12 +52,38 @@ export default function Dashboard({ code }) {
     
         fetchData();
       }, [token]);
+
+
+    useEffect(() => {
+        if (!token) return;
+        spotifyApi.getUserPlaylists().then( 
+          function(data) {
+            console.log('Retrieved playlists', data.body);
+            setPlaylists(data.body.items);
+          },
+          function(err) {
+            console.log('Something went wrong!', err);
+          }
+        );
+    }, []);
+
+    useEffect(() => {
+      const id = location.pathname.split('/')[2];
+      const selectedPlaylist = playlists.find(playlist => playlist.id === id);
+      if (selectedPlaylist) {
+        setSelectedPlaylist(selectedPlaylist);
+      }
+    }, [location, playlists]);
       
     return (
         <div className='flex bg-gradient-to-b from-green-900 via-black to-black h-screen'>
-            <Sidebar />
-            {/* <Navbar user={user}/> */}
-            {/* <h1 className='container mx-auto'> Hello {user.name}</h1>   */}
+            <Navbar user={user}/>
+            <Sidebar playlists={playlists}/>  
+            <div>
+              <img src={selectedPlaylist?.images[0]?.url || '2'} alt="" className="h-96 w-96" />
+            </div>
+
+
         </div>
     )
 }
