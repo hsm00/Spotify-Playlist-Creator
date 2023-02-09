@@ -5,7 +5,7 @@ const AUTH_URL = 'https://accounts.spotify.com/authorize?client_id=58cb403bae224
 
 const Button = ({url}) => (
     <button 
-    className=" my-auto bg-spotify-green rounded-full p-4 mg-y2 text-black font-bold shadow-white transition-shadow duration-200 ease-in-out flex items-center"
+    className="my-auto bg-green-600 rounded-full p-4 text-black font-bold inline-flex hover:bg-green-700"
     onClick={() => { window.location.href = url; }}
     >
         <img src={SpotifyLogo} alt="Spotify Logo" className="mr-2" />
@@ -13,5 +13,4 @@ const Button = ({url}) => (
     </button>
   
 );
-
 export default Button;

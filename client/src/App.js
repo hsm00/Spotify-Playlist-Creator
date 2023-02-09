@@ -10,14 +10,16 @@ const code = new URLSearchParams(window.location.search).get("code")
 function App() {
   return (
     <BrowserRouter>
+      <div className="">
         <Routes>
         {code ? (
           <Route path="/dashboard" element={<Dashboard code={code} />} />
           ) : (
             <Route path="/dashboard" element={<Dashboard />} />
-          )}
+            )}
           <Route path="/" element={<Login />} />
         </Routes>
+      </div>
     </BrowserRouter>
 
 

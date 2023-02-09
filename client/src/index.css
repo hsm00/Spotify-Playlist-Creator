@@ -6,3 +6,10 @@
 .bg-spotify-green {
     background-color: #1DB954;
   }
+
+  @layer
+  components {
+    .sidebar-icon  {
+      @apply relative flex items-center justify-center h-12 w-12 mt-2 mx-auto shadow-lg bg-transparent;
+    }
+  }
