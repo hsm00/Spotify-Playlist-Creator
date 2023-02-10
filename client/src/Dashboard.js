@@ -54,18 +54,26 @@ export default function Dashboard({ code }) {
       }, [token]);
 
 
-    useEffect(() => {
+      useEffect(() => {
         if (!token) return;
-        spotifyApi.getUserPlaylists().then( 
-          function(data) {
-            console.log('Retrieved playlists', data.body);
-            setPlaylists(data.body.items);
-          },
-          function(err) {
-            console.log('Something went wrong!', err);
-          }
-        );
-    }, []);
+      
+        const fetchPlaylists = (offset) => {
+          spotifyApi.getUserPlaylists({ limit: 50, offset })
+            .then(data => {
+              setPlaylists(prevPlaylists => [...prevPlaylists, ...data.body.items]);
+              console.log(data)
+              if (data.body.next) {
+                fetchPlaylists(offset + 50);
+                console.log(data.body.next);
+              }
+            })
+            .catch(error => {
+              console.log('Something went wrong!', error);
+            });
+        };
+      
+        fetchPlaylists(0);
+      }, []);
 
     useEffect(() => {
       const id = location.pathname.split('/')[2];

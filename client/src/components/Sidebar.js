@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 
 const Sidebar = ({playlists}) => {
@@ -22,7 +23,7 @@ const Sidebar = ({playlists}) => {
 
       <div className="flex flex-col m-2 h-screen overflow-y-scroll ">
         {playlists.map((playlist) => (
-          <a key={playlist.id} href={`/dashboard/${playlist.id}`} className="mt-3 hover:text-zinc-400">{playlist.name}</a>
+          <Link key={playlist.id} to={`/dashboard/${playlist.id}`} className="mt-3 hover:text-zinc-400">{playlist.name}</Link>
         ))
         }
         
