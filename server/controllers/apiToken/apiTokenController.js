@@ -5,10 +5,12 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const app = express()
+const OpenAI = require('openai-api');
+const { Configuration, OpenAIApi } = require("openai");
 
 app.use(cors())
 app.use(bodyParser.json())
-
+app.use(bodyParser.urlencoded({ extended: true }))
 // /login
 exports.getAccessToken = (req, res) => {
     const code = req.body.code;
@@ -58,5 +60,39 @@ exports.getRefreshToken = (req, res) => {
     }).catch((err) => {
         console.log(err);
         res.sendStatus(400);
+    });
+};
+
+
+const configuration = new Configuration({
+    organization: "org-I7FPX5CZpdbqppzGd8THtwWc",
+    apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
+// const response = await openai.listEngines();
+async function callApi() {
+    const response = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: "Say this is a test",
+        max_tokens: 7,
+        temperature: 0,
+    });
+    console.log(response.data.choices[0].text);
+}
+
+// create a simple api that calls the function above
+exports.openAI = async (req, res) => {
+    const { message } = req.body;
+    console.log(message);
+    const response = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: message,
+        max_tokens: 90,
+        temperature: 1,
+});
+    console.log(response.data.choices[0].text);
+    res.json({
+        data: response.data
     });
 };

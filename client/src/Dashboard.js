@@ -1,5 +1,7 @@
 import Navbar from './components/Nav';
 import Sidebar from './components/Sidebar';
+import Main from './components/Main';
+
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import SpotifyWebApi from 'spotify-web-api-node';
@@ -54,18 +56,26 @@ export default function Dashboard({ code }) {
       }, [token]);
 
 
-    useEffect(() => {
+      useEffect(() => {
         if (!token) return;
-        spotifyApi.getUserPlaylists().then( 
-          function(data) {
-            console.log('Retrieved playlists', data.body);
-            setPlaylists(data.body.items);
-          },
-          function(err) {
-            console.log('Something went wrong!', err);
-          }
-        );
-    }, []);
+      
+        const fetchPlaylists = (offset) => {
+          spotifyApi.getUserPlaylists({ limit: 50, offset })
+            .then(data => {
+              setPlaylists(prevPlaylists => [...prevPlaylists, ...data.body.items]);
+              console.log(data)
+              if (data.body.next) {
+                fetchPlaylists(offset + 50);
+                console.log(data.body.next);
+              }
+            })
+            .catch(error => {
+              console.log('Something went wrong!', error);
+            });
+        };
+      
+        fetchPlaylists(0);
+      }, []);
 
     useEffect(() => {
       const id = location.pathname.split('/')[2];
@@ -76,14 +86,14 @@ export default function Dashboard({ code }) {
     }, [location, playlists]);
       
     return (
-        <div className='flex bg-gradient-to-b from-green-900 via-black to-black h-screen'>
+        <div className='flex flex-col bg-gradient-to-b from-green-800 via-black to-black h-screen'>
             <Navbar user={user}/>
             <Sidebar playlists={playlists}/>  
-            <div>
-              <img src={selectedPlaylist?.images[0]?.url || '2'} alt="" className="h-96 w-96" />
-            </div>
-
-
+             {selectedPlaylist ? 
+             <div className="flex justify-center  h-full w-screen">
+             <img src={selectedPlaylist?.images[0]?.url || '2'} alt="" className="h-96 w-96" />
+             </div>
+              : <Main />}
         </div>
     )
 }
