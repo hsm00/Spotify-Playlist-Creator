@@ -22,7 +22,7 @@ const Main = ({playlists}) => {
 
     async function handleSubmit (e)  {
         e.preventDefault();
-       await setChatLog([{user: "me", message: `create a playlist with the songs available on spotify with the following data: mood= ${mood} genre= ${genre} favorite artist= ${favoriteArtist} with 5 songs`}])
+       await setChatLog([{user: "me", message: `create a playlist with the songs available on spotify with the following data: mood= ${mood} genre= ${genre} favorite artist: ${favoriteArtist} with 10 songs`}])
        
         setInput("");
 
