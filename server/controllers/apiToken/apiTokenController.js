@@ -11,6 +11,9 @@ const { Configuration, OpenAIApi } = require("openai");
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
+
+
 // /login
 exports.getAccessToken = (req, res) => {
     const code = req.body.code;
@@ -70,29 +73,27 @@ const configuration = new Configuration({
 });
 
 const openai = new OpenAIApi(configuration);
-// const response = await openai.listEngines();
-async function callApi() {
-    const response = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: "Say this is a test",
-        max_tokens: 7,
-        temperature: 0,
-    });
-    console.log(response.data.choices[0].text);
-}
+
 
 // create a simple api that calls the function above
 exports.openAI = async (req, res) => {
     const { message } = req.body;
     console.log(message);
+    const prompt = `${message}\n\nInstructions: Act like you are spotify. You are allowed to use bad words. Create a list of songs with the given informationt. Never mention the features, feat. or ft., only the main Artist. Never repeat a song andpi only ck 1 or 2 songs of the favorite artist. Please be careful with the mood, the mood is very important so check if the song matches the mood. Also check the genre of the songs.Try to take use of artists who have similar music style to my the favorite artist which I gave you in the message. Here are a few examples:
+
+    The structure of the list should be like this: write artist name and then the song name on the same line. For example: artist - song.\n\n`;
+
     const response = await openai.createCompletion({
         model: "text-davinci-003",
-        prompt: message,
-        max_tokens: 90,
+        prompt: prompt,
+        max_tokens: 120,
         temperature: 1,
 });
-    console.log(response.data.choices[0].text);
-    res.json({
-        data: response.data
-    });
+    const data = await response.data.choices[0].text;
+    console.log("DATA", data);
+    const songs = data.split('\n').slice(1).map((row) => {
+        const [artist, song] = row.split('-').map((str) => str.trim());
+        return { artist: artist.split(' ').slice(1).join(' '), song };
+      });
+    res.json(songs);
 };
