@@ -10,7 +10,7 @@ const Sidebar = ({playlists}) => {
   return (
     <div className="fixed top-0 left-0 h-screen w-64 m0
                 flex flex-col
-                bg-zinc-900 text-white shadow-lg">
+                bg-black text-white shadow-lg">
   
     
 
