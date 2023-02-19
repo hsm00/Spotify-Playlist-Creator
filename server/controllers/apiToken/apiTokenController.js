@@ -87,7 +87,7 @@ exports.openAI = async (req, res) => {
         model: "text-davinci-003",
         prompt: prompt,
         max_tokens: 120,
-        temperature: 1,
+        temperature: 0.9,
 });
     const data = await response.data.choices[0].text;
     console.log("DATA", data);
