@@ -39,29 +39,27 @@ const Main = ({token}) => {
 
 
     async function handleSubmit (e)  {
-        e.preventDefault();
-        await setChatLog([{user: "me", message: `create a playlist with the songs available on spotify with the following data: mood= ${mood} genre= ${genre} favorite artist: ${favoriteArtist} with 5 songs`}])
-       
-        setInput("");
-
-       // fetch the chatlog and post it to 3001/api
-        const response = await fetch('http://localhost:3001/api', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              message : chatLog.map((message) => message.message).join("")
-            })
-          });
-          const data = await response.json();
-            //remove everything before the first space from the incoming data array
-            
-           await setOpenAiSongs(data);
-           addTracksToPlaylist();
-
-           console.log(openAiSongs);
-      };
+      e.preventDefault();
+      await setChatLog([{user: "me", message: `create a playlist with the songs available on spotify with the following data: mood= ${mood} genre= ${genre} favorite artist: ${favoriteArtist} with 5 songs`}])
+           
+      setInput("");
+    
+      // fetch the chatlog and post it to 3001/api
+      const response = await fetch('http://localhost:3001/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message : chatLog.map((message) => message.message).join("")
+        })
+      });
+      
+      const data = await response.json();
+      setOpenAiSongs(data);
+      console.log(openAiSongs);
+    
+    };
 
       async function createPlaylist(e) {
         e.preventDefault();
@@ -102,10 +100,12 @@ const Main = ({token}) => {
         }
         setSpotifySongs(trackIds);
         console.log(spotifySongs);
+
       }
 
+      
+
       async function addTracksToPlaylist() {
-        searchTracks();
         try {
           for (const trackId of spotifySongs) {
             const response = await spotifyApi.addTracksToPlaylist(playlistId, [`spotify:track:${trackId}`]);
@@ -116,6 +116,21 @@ const Main = ({token}) => {
         }
       }
 
+
+      useEffect(() => {
+        if (openAiSongs.length > 0) {
+          // perform further actions here
+          searchTracks();
+        }
+      }, [openAiSongs]);
+
+      useEffect(() => {
+        if (spotifySongs.length > 0) {
+          // perform further actions here
+          addTracksToPlaylist();
+        }
+      }, [spotifySongs]);
+      
     return (
       <div className="flex items-center justify-center h-screen w-screen bg-white-500">
       {!playlistName && ( 
