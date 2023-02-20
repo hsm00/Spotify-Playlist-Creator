@@ -79,15 +79,15 @@ const openai = new OpenAIApi(configuration);
 exports.openAI = async (req, res) => {
     const { message } = req.body;
     console.log(message);
-    const prompt = `${message}\n\nInstructions: Act like you are spotify. You are allowed to use bad words. Create a list of songs with the given informationt. Never mention the features, feat. or ft., only the main Artist. Never repeat a song andpi only ck 1 or 2 songs of the favorite artist. Please be careful with the mood, the mood is very important so check if the song matches the mood. Also check the genre of the songs.Try to take use of artists who have similar music style to my the favorite artist which I gave you in the message. Here are a few examples:
+    const prompt = `${message}\n\nInstructions: You are allowed to use bad words. Create a list of songs with the given informationt. Never mention the features, feat. or ft., only the main Artist. Never repeat a song and never pick more then 2 songs of 1 artists. Please be careful with the mood, the mood is very important so check if the song matches the mood. Also check the genre of the songs.Try to take use of artists who have similar music style to my the favorite artist which I gave you in the message. Here are a few examples:
 
-    The structure of the list should be like this: write artist name and then the song name on the same line. For example: artist - song.\n\n`;
+    The structure of the list should be like this: artist - song.\n\n`;
 
     const response = await openai.createCompletion({
         model: "text-davinci-003",
         prompt: prompt,
         max_tokens: 120,
-        temperature: 1,
+        temperature: 0.9,
 });
     const data = await response.data.choices[0].text;
     console.log("DATA", data);
