@@ -119,16 +119,15 @@ export default function Dashboard({ code }) {
             <Navbar user={user}/>
             <Sidebar playlists={playlists}/>  
              {selectedPlaylist ? 
-             <div className="flex justify-center  h-full w-screen">
-             <img src={selectedPlaylist?.images[0]?.url || '2'} alt="" className="h-96 w-96" />
-             
-             <ul>
-               {selectedPlaylistTracks.map(track => (
-                 <li className="text-white mt-4" key={track.uri}> {track.title} </li>
+              <div className="flex justify-center h-full w-screen flex-col items-center ">
+              <img src={selectedPlaylist?.images[0]?.url || '2'} alt="" className="h-96 w-96" />
+          
+              <ul className="text-white mt-6 items-start">
+                {selectedPlaylistTracks.map(track => (
+                  <li className="mt-2 " key={track.uri}>{track.artist} - {track.title}</li>
                 ))}
-
-             </ul>
-             </div>
+              </ul>
+            </div>
               : <Main token= {token}/>}
         </div>
     )
