@@ -3,12 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faBucket, faPlus} from '@fortawesome/free-solid-svg-icons';
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import '../index.css';
+import { useLocation } from 'react-router-dom';
 
 const Main = ({token}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [input , setInput] = useState();
     const [chatLog, setChatLog] = useState([]);
+    const location = useLocation();
 
+    const [songsToCheck, setSongsToCheck] = useState([]);
     const [openAiSongs, setOpenAiSongs] = useState([]);
     const [spotifySongs, setSpotifySongs] = useState([]);
 
@@ -38,29 +41,45 @@ const Main = ({token}) => {
     spotifyApi.setAccessToken(token);
 
 
-    async function handleSubmit (e)  {
+    async function handleSubmit(e) {
       e.preventDefault();
-      await setChatLog([{user: "me", message: `create a playlist with the songs available on spotify with the following data: mood= ${mood} genre= ${genre} favorite artist: ${favoriteArtist} with 5 songs`}])
-           
+      const message = `create a playlist with songs that match the following: mood= ${mood} genre= ${genre} favorite artist: ${favoriteArtist} with 10 songs`;
+      setChatLog((prevChatLog) => [...prevChatLog, { user: "me", message: message }]);
       setInput("");
-    
-      // fetch the chatlog and post it to 3001/api
-      const response = await fetch('http://localhost:3001/api', {
-        method: 'POST',
+      
+      // change url to /dashboard/acceptstate
+      navigate(`/dashboard/acceptstate`);
+
+      const response = await fetch("http://localhost:3001/api", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          message : chatLog.map((message) => message.message).join("")
-        })
+          message: message,
+        }),
       });
       
-      const data = await response.json();
-      setOpenAiSongs(data);
-      console.log(openAiSongs);
-    
-    };
 
+
+      const data = await response.json();
+      setSongsToCheck(data);
+      console.log(openAiSongs);
+    };
+    
+    async function handleAcceptState(e) {
+      e.preventDefault();
+      setOpenAiSongs(songsToCheck);
+
+      // set timeout to 5 seconds
+      setTimeout(() => {
+
+      window.location.href = `http://localhost:3000/dashboard/${playlistId}`;
+      
+      }, 5000);
+
+      
+    }
       async function createPlaylist(e) {
         e.preventDefault();
         try {
@@ -74,7 +93,6 @@ const Main = ({token}) => {
           const playlistId = data.body.id;
           setPlaylistId(playlistId);
           setPlaylistName(data.body.name);
-          navigate(`/dashboard/playlist/${playlistId}`);
           }
           catch (err) {
           console.log('Something went wrong!', err);
@@ -103,8 +121,6 @@ const Main = ({token}) => {
 
       }
 
-      
-
       async function addTracksToPlaylist() {
         try {
           for (const trackId of spotifySongs) {
@@ -131,6 +147,24 @@ const Main = ({token}) => {
         }
       }, [spotifySongs]);
       
+
+      if(songsToCheck.length > 0) {
+        return (
+          <div className="flex items-center justify-center h-screen w-screen bg-white-500">
+            <ul className="text-white">
+              {songsToCheck.map((song) => (
+                <li className= "mt-3" key={song.id}>{song.artist} - {song.song}</li>
+              ))}
+            </ul>
+            <form onSubmit={handleAcceptState}
+
+              rows="1"
+              className="bg-white-500 px-64 rounded-lg shadow-xl">
+              <button type="submit" className="bg-white mt-10 py-2 px-4 rounded-full text-black font-medium hover:bg-gray-900 hover:text-white">Accept</button>
+            </form>
+          </div>
+        );
+      }
     return (
       <div className="flex items-center justify-center h-screen w-screen bg-white-500">
       {!playlistName && ( 
@@ -194,8 +228,8 @@ const Main = ({token}) => {
           <button type="submit" className="bg-white mt-10 py-2 px-4 rounded-full text-black font-medium hover:bg-gray-900 hover:text-white">Submit</button>
           </form>
           )}
-        </div>
-
+        </div>            
+        
 
     );
 };

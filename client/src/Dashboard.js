@@ -17,6 +17,8 @@ export default function Dashboard({ code }) {
     const [user, setUser] = useState([]);
     const [playlists, setPlaylists] = useState([]);
     const [selectedPlaylist, setSelectedPlaylist] = useState();
+    const [selectedPlaylistTracks, setSelectedPlaylistTracks] = useState([]);
+
     const location = useLocation();
     const [search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState([]);
@@ -84,6 +86,32 @@ export default function Dashboard({ code }) {
         setSelectedPlaylist(selectedPlaylist);
       }
     }, [location, playlists]);
+
+    useEffect(() => {
+      if (!selectedPlaylist) return;
+      spotifyApi.getPlaylistTracks(selectedPlaylist.id)
+        .then(data => {
+          setSelectedPlaylistTracks(data.body.items.map(track => {
+            const smallestAlbumImage = track.track.album.images.reduce(
+              (smallest, image) => {
+                if (image.height < smallest.height) return image; 
+                return smallest;
+              },
+              track.track.album.images[0]
+            );
+
+            return {
+              artist: track.track.artists[0].name,
+              title: track.track.name,
+              uri: track.track.uri,
+              albumUrl: smallestAlbumImage.url
+            };
+          }));
+        })
+        .catch(error => {
+          console.log('Something went wrong!', error);
+        });
+    }, [selectedPlaylist]);
       
     return (
       token &&
@@ -93,6 +121,13 @@ export default function Dashboard({ code }) {
              {selectedPlaylist ? 
              <div className="flex justify-center  h-full w-screen">
              <img src={selectedPlaylist?.images[0]?.url || '2'} alt="" className="h-96 w-96" />
+             
+             <ul>
+               {selectedPlaylistTracks.map(track => (
+                 <li className="text-white mt-4" key={track.uri}> {track.title} </li>
+                ))}
+
+             </ul>
              </div>
               : <Main token= {token}/>}
         </div>

@@ -15,10 +15,10 @@ const Sidebar = ({playlists}) => {
     
 
     <h1 className="relative flex items-center justify-center font-bold mt-4">Your Playlists</h1>
-      <Link  to="/dashboard"className="inline-flex m-4 p-2 items-center hover:text-green-600 border-dashed rounded border-2 border-grey-500 hover:border-green-600">
+      <a  href="/dashboard"className="inline-flex m-4 p-2 items-center hover:text-green-600 border-dashed rounded border-2 border-grey-500 hover:border-green-600">
         <FontAwesomeIcon icon={faPlus} className=""> </FontAwesomeIcon>
         <p className='pl-2 font-bold'>  New Playlist </p>
-      </Link>
+      </a>
 
 
       <div className="flex flex-col m-2 h-screen overflow-y-scroll ">
