@@ -21,12 +21,6 @@ const Main = ({token}) => {
     const [mood, setMood] = useState("");
     const [genre, setGenre] = useState("");
     const [favoriteArtist, setFavoriteArtist] = useState("");
-    const [leastFavoriteArtist, setLeastFavoriteArtist] = useState("");
-    const [numSongs, setNumSongs] = useState("");
-    const [numSongsFromFavoriteArtist, setNumSongsFromFavoriteArtist] = useState("");
-    const [numSongsFromLeastFavoriteArtist, setNumSongsFromLeastFavoriteArtist] = useState("");
-    const [numSongsFromFavoriteGenre, setNumSongsFromFavoriteGenre] = useState("");
-    const [numSongsFromLeastFavoriteGenre, setNumSongsFromLeastFavoriteGenre] = useState("");
 
     const navigate = useNavigate();
 
@@ -150,19 +144,47 @@ const Main = ({token}) => {
 
       if(songsToCheck.length > 0) {
         return (
-          <div className="flex items-center justify-center h-screen w-screen bg-white-500">
-            <ul className="text-white">
-              {songsToCheck.map((song) => (
-                <li className= "mt-3" key={song.id}>{song.artist} - {song.song}</li>
-              ))}
-            </ul>
-            <form onSubmit={handleAcceptState}
+          // <div className="flex items-center justify-center h-screen w-screen bg-white-500">
+          //   <ul className="text-white">
+          //     {songsToCheck.map((song) => (
+          //       <li className= "mt-3" key={song.id}>{song.artist} - {song.song}</li>
+          //     ))}
+          //   </ul>
+          //   <form onSubmit={handleAcceptState}
 
-              rows="1"
-              className="bg-white-500 px-64 rounded-lg shadow-xl">
-              <button type="submit" className="bg-white mt-10 py-2 px-4 rounded-full text-black font-medium hover:bg-gray-900 hover:text-white">Accept</button>
-            </form>
-          </div>
+          //     rows="1"
+          //     className="bg-white-500 px-64 rounded-lg shadow-xl">
+          //     <button type="submit" className="bg-white mt-10 py-2 px-4 rounded-full text-black font-medium hover:bg-gray-900 hover:text-white">Accept</button>
+          //   </form>
+          // </div>
+
+      <div className="flex flex-col h-screen w-screen mb-9 items-center justify-center ">
+        <ul className="text-white mt-1 h-screen">
+          {songsToCheck.map((track) => (
+            <li
+              className="mt-1 mb-1 border-b border-gray-500"
+              key={track.uri}
+            >
+              <div className="flex flex-col p-3 h-22 w-full">
+                <div>{track.song}</div>
+                <div className="text-sm text-gray-400 mt-1">{track.artist}</div>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <form
+          onSubmit={handleAcceptState}
+          className="fixed bottom-0 left-0 w-full bg-white-500 px-64 py-1 shadow-xl"
+        >
+          <button
+            type="submit"
+            className="bg-white py-2 px-4 mb-3 rounded-full text-black font-medium hover:bg-gray-900 hover:text-white"
+          >
+            Accept
+          </button>
+        </form>
+      </div>
+
         );
       }
     return (
@@ -170,9 +192,9 @@ const Main = ({token}) => {
       {!playlistName && ( 
         <form onSubmit={createPlaylist}
           rows="1"
-          className="bg-white-500 px-64 rounded-lg shadow-xl">
+          className="bg-white-500 px-64 rounded-lg shadow-xl w-84">
           <div className="mt-20">
-            <label htmlFor="playlistName" className="block text-white font-medium">Playlist name: </label>
+            <label htmlFor="playlistName" className=" w-full block text-white font-medium">Playlist name: </label>
             <input
               type="text"
               id="playlistName"
@@ -229,8 +251,6 @@ const Main = ({token}) => {
           </form>
           )}
         </div>            
-        
-
     );
 };
 

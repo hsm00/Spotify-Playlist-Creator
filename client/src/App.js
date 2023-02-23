@@ -4,6 +4,8 @@ import "./index.css"
 import Main from "./components/Main"
 import Login from "./Login"
 import Dashboard from "./Dashboard"
+import About from "./components/About"
+
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 const code = new URLSearchParams(window.location.search).get("code")
@@ -21,6 +23,7 @@ function App() {
           <Route  path="/dashboard/:id" element={<Dashboard />} />
           <Route path="/" element={<Login />} />
           <Route path="/dashboard/playlist/:id" element={<Dashboard />} />
+          <Route path="/dashboard/dashboard/about" element={<About />} />
         </Routes>
       </div>
     </BrowserRouter>
