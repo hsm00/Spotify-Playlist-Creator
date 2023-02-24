@@ -115,13 +115,13 @@ export default function Dashboard({ code }) {
       
     return (
       token &&
-        <div className='flex flex-col bg-gradient-to-b from-green-800 via-black to-black h-screen'>
+        <div className='flex flex-col bg-gradient-to-b from-green-800 via-black to-black h-full'>
             <Navbar user={user}/>
             <Sidebar playlists={playlists}/>  
              {selectedPlaylist ? 
               <div className="flex  h-screen  flex-col items-center mx-6 ">
               <img src={selectedPlaylist?.images[0]?.url || '2'} alt="" className="h-96 w-96 mt-10" />
-              <div className=" h-screen w-84 mb-9 mx-3">
+              <div className=" h-screen w-84 mb-9 mx-3 items-center justify-center">
                 <ul className="text-white mt-6 h-screen w-full ">
               {selectedPlaylistTracks.map(track => (
                 <li className="mt-4 mb-6 w-full" key={track.uri}>
