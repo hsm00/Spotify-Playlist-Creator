@@ -115,7 +115,7 @@ export default function Dashboard({ code }) {
       
     return (
       token &&
-        <div className='flex flex-col bg-gradient-to-b from-green-800 via-black to-black h-full'>
+        <div className='flex flex-col bg-gradient-to-b from-green-800 via-green-800 to-black w-screen'>
             <Navbar user={user}/>
             <Sidebar playlists={playlists}/>  
              {selectedPlaylist ? 

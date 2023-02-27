@@ -4,10 +4,8 @@ import Sidebar from './Sidebar';
 
 const about = () => {
    
-    
     return (
         <div>
-     
             <h1>TEST</h1>
         </div>
 
