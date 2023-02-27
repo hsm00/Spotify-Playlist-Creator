@@ -167,7 +167,7 @@ const Main = ({token}) => {
           //     <button type="submit" className="bg-white mt-10 py-2 px-4 rounded-full text-black font-medium hover:bg-gray-900 hover:text-white">Accept</button>
           //   </form>
           // </div>
-          <div className="flex flex-col h-screen w-screen mb-9 items-center justify-center ">
+          <div className="flex flex-col  w-screen mb-9 items-center justify-center ">
           { loading ? (<h1 className="text-white">loading...</h1>) : (    
           <div className="flex flex-col h-screen w-screen mb-9 items-center justify-center ">
         <ul className="text-white mt-1 h-screen">
@@ -223,7 +223,7 @@ const Main = ({token}) => {
               rows="1"
               className="bg-white-500 rounded-lg shadow-xl w-84"
             >
-              <div className="mt-20">
+              <div className="">
                 <label
                   htmlFor="playlistName"
                   className="w-full block text-white font-medium"
