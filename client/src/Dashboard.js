@@ -1,6 +1,7 @@
 import Navbar from './components/Nav';
 import Sidebar from './components/Sidebar';
 import Main from './components/Main';
+import { Canvas } from '@react-three/fiber';
 
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -8,6 +9,8 @@ import SpotifyWebApi from 'spotify-web-api-node';
 import useAuth from "./useAuth"
 import axios from 'axios';
 import './index.css';
+import Box from "./components/Box";
+
 import { useLocation } from 'react-router-dom';
 
 
@@ -61,7 +64,10 @@ export default function Dashboard({ code }) {
       useEffect(() => {
         if (!token) return;
       
-        const fetchPlaylists = (offset) => {
+        const fetchPlaylists = async (offset) => {
+          await spotifyApi.setAccessToken(token);
+          if (!token) return;
+          try { 
           spotifyApi.getUserPlaylists({ limit: 50, offset })
             .then(data => {
               setPlaylists(prevPlaylists => [...prevPlaylists, ...data.body.items]);
@@ -71,13 +77,15 @@ export default function Dashboard({ code }) {
                 console.log(data.body.next);
               }
             })
-            .catch(error => {
-              console.log('Something went wrong!', error);
-            });
+          } catch (err) {
+            console.log('Something went wrong!', err);
+          }
+     
+          
         };
       
         fetchPlaylists(0);
-      }, []);
+      }, [token]);
 
     useEffect(() => {
       const id = location.pathname.split('/')[2];
@@ -115,7 +123,7 @@ export default function Dashboard({ code }) {
       
     return (
       token &&
-        <div className='flex flex-col bg-gradient-to-b from-green-800 via-green-800 to-black w-screen'>
+        <div className='flex flex-col bg-gradient-to-b from-green-800 via-green-800 to-black w-screen h-screen'>
             <Navbar user={user}/>
             <Sidebar playlists={playlists}/>  
              {selectedPlaylist ? 

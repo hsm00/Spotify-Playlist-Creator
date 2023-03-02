@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../images/logo.svg';
+import Logo from '../Images/logo.svg';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import { useLoader } from "@react-three/fiber";       
+import { TextureLoader } from "three/src/loaders/TextureLoader";
+import Box from "./Box";
 
 const Navbar = ({user}) => {
-  return (
+  return (  
     
-    <nav className="flex w-screen justify-end  ">
-       <Link to="/" className="my-auto w-24 inline-flex">
+    <nav className="flex w-screen justify-end ">
 
-         <img src={Logo} alt="Spotify Logo" className="my-auto w-24 " />
-       </Link>
+       <div className="my-auto w-32 inline-flex mr-2">
+              <Canvas className="canvas " style="">
+                  <ambientLight intensity={0.8}/>
+                  <directionalLight position={[-3, 5, 2]} intensity={1} />
+                  <OrbitControls enableZoom={false}/>
+                  <Suspense fallback={null}>
+                      <Box />
+                  </Suspense>
+              </Canvas>
+              </div>
 
-  <div className="inline-flex m-4 items-center border-solid rounded-full bg-black h-8">
+  <div className="flex   items-center border-solid rounded-full bg-black h-9 mt-9 mr-7">
     <img className="m-1 rounded-full w-7 h-7" src={user.image} alt="user" />
     <p className="text-white text-x p-1 font-thin">{user.name}</p> 
-  </div>
-</nav>
-        
-
+    </div>
+  </nav>        
   );
 }
 
