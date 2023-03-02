@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faBucket, faPlus} from '@fortawesome/free-solid-svg-icons';
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import '../index.css';
 import { useLocation } from 'react-router-dom';
+import Box from './Box';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import { useLoader } from "@react-three/fiber";       
+import { TextureLoader } from "three/src/loaders/TextureLoader";
 
 const Main = ({token}) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -186,7 +191,7 @@ const Main = ({token}) => {
             </li>
           ))}
         </ul>
-        <div className="flex fixed flex-col h-screen w-screen mb-32 items-center justify-end ">
+        <div className="flex fixed flex-col h-screen w-screen mb-64 items-center justify-end ">
           <form
             onSubmit={handleAcceptState}
             className="flex justify-center w-full bg-white-500 px-64 mt-4 py-1 shadow-xl"
@@ -216,12 +221,13 @@ const Main = ({token}) => {
         );
       }
       return (
-        <div className="flex items-center justify-center h-screen w-screen bg-white-500">
+        <div className="flex flex-col items-center justify-center h-screen w-screen bg-white-500">
+            
           {!playlistName ? (
             <form
-              onSubmit={createPlaylist}
-              rows="1"
-              className="bg-white-500 rounded-lg shadow-xl w-84"
+            onSubmit={createPlaylist}
+            rows="1"
+            className="bg-white-500 w-84"
             >
               <div className="">
                 <label
