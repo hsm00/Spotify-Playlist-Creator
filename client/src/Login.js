@@ -35,8 +35,8 @@ export default function Login() {
                 <img src={Logo} alt="Spotify Logo" className="my-auto w-32 " />
             </div>
             <div className="flex items-center mr-20">
-                <Link to="/dashboard/about" className="inline-flex items-center p-3 text-white hover:text-gray-300 text-lg">About</Link>
-                <Link to="/dashboard/Contact" className="inline-flex items-center text-white hover:text-gray-300 text-lg">Contact</Link>
+                <Link to="/about" className="inline-flex items-center p-3 text-white hover:text-gray-300 text-lg">About</Link>
+                <Link to="/contact" className="inline-flex items-center text-white hover:text-gray-300 text-lg">Contact</Link>
                 <div className="inline-flex m-4 items-center border-solid rounded-full bg-black">
               
                 </div>

@@ -17,6 +17,7 @@
   body {
    background-color: black;
    margin: 0; 
+   max-width: 100%;
   }
 
   canvas {
