@@ -5,6 +5,7 @@ import Main from "./components/Main"
 import Login from "./Login"
 import Dashboard from "./Dashboard"
 import About from "./components/About"
+import Contact from "./components/Contact"
 
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
@@ -23,7 +24,9 @@ function App() {
           <Route  path="/dashboard/:id" element={<Dashboard />} />
           <Route path="/" element={<Login />} />
           <Route path="/dashboard/playlist/:id" element={<Dashboard />} />
-          <Route path="/dashboard/dashboard/about" element={<About />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+
         </Routes>
       </div>
     </BrowserRouter>

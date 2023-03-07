@@ -4,6 +4,7 @@ import {faBucket, faPlus} from '@fortawesome/free-solid-svg-icons';
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import '../index.css';
 import { useLocation } from 'react-router-dom';
+import TypeWriterEffect from 'react-typewriter-effect';
 import Box from './Box';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
@@ -176,7 +177,7 @@ const Main = ({token}) => {
           { loading ? (<h1 className="text-white">loading...</h1>) : (    
           <div className="flex flex-col h-screen w-screen mb-9 items-center justify-center ">
         <ul className="text-white mt-1 h-screen">
-          <h1 className="text-white mt-32 font-bold">Your generated Playlist will look like this:</h1>
+          
           {songsToCheck.map((track) => (
             <li
               className="mt-1 mb-1 border-b border-gray-500"
@@ -222,13 +223,25 @@ const Main = ({token}) => {
       }
       return (
         <div className="flex flex-col items-center justify-center h-screen w-screen bg-white-500">
-            
           {!playlistName ? (
+              <>
+             <h1 className="text-white  font-bold mb-28 text-2xl max-w-sm">
+              
+              <TypeWriterEffect
+                textStyle={{ fontFamily: 'Red Hat Display' }}
+                startDelay={10}
+                cursorColor="white"
+                text="Create your AI generated playlist:"
+                typeSpeed={100}
+                hideCursorAfterText={true}
+              />  
+      
+          </h1>
             <form
             onSubmit={createPlaylist}
             rows="1"
             className="bg-white-500 w-84"
-            >
+            >  
               <div className="">
                 <label
                   htmlFor="playlistName"
@@ -251,6 +264,7 @@ const Main = ({token}) => {
                 Next
               </button>
             </form>
+            </>
           ) : loading ? (
             <h1 className="text-white">loading...</h1>
           ) : (

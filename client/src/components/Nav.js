@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../Images/logo.svg';
+import Logo from '../images/logo.svg';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { useLoader } from "@react-three/fiber";       

@@ -10,7 +10,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mui/material": "^5.11.10",
-    "@react-three/drei": "^9.56.28",
+    "@react-three/drei": "^9.57.0",
     "@react-three/fiber": "^8.11.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -27,6 +27,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
+    "react-typewriter-effect": "^1.1.0",
     "spotify-web-api-node": "^5.0.2",
     "three": "^0.150.1",
     "web-vitals": "^2.1.4"
