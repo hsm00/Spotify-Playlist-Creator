@@ -1,7 +1,7 @@
 import React, { Suspense, useRef } from "react";
-import { useFrame, useLoader } from "@react-three/fiber";       
+import { useFrame, useLoader } from "@react-three/fiber";   
 import { TextureLoader } from "three/src/loaders/TextureLoader";
-import logo from "../Images/logo.svg";
+import logo from "../images/logo.svg";
 
 export default function Box() {
   const colorMap = useLoader(TextureLoader, logo);
