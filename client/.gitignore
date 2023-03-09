@@ -1,0 +1,33 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Build directory
+build/
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cache and artifacts
+*.pnp
+*.pnp.js
+*.tgz
+*.lock
+.pnp.*
+public/static/
+dist/
+.cache/
+.vscode/
+
+# Misc
+.DS_Store
+Thumbs.db
