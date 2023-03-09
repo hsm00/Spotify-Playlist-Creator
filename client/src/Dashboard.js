@@ -33,7 +33,7 @@ export default function Dashboard({ code }) {
     let spotifyApi = new SpotifyWebApi({
       clientId: '58cb403bae2240ff8af16de248d5020c',
       clientSecret: '569501fa826b4bd499753ff7b6325493',
-      redirectUri: 'http://localhost:3000/localhost:3000/dashboard'
+      redirectUri: 'https://thriving-knee-production-03ff.up.railway.app/dashboard'
     });
 
     spotifyApi.setAccessToken(token);

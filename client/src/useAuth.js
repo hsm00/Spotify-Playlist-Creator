@@ -10,7 +10,7 @@ export default function useAuth(code) {
     useEffect(() => {
         if (!code) return;
         if (token) return;
-        axios.post('http://localhost:3001/login', {
+        axios.post('https://spotify-playlist-generator-api-production.up.railway.app/login', {
             code, 
             })
             .then(response => {
@@ -39,7 +39,7 @@ export default function useAuth(code) {
         const expired = currentTime > tokenExpiryTimestamp;
         if (tokenExpiryTimestamp > currentTime) return Promise.resolve(token); // Return the current token as a resolved promise
         // Token has expired, request new one
-        return axios.post('http://localhost:3001/refresh', {
+        return axios.post('https://spotify-playlist-generator-api-production.up.railway.app/refresh', {
           refreshToken,
         })
           .then(response => {

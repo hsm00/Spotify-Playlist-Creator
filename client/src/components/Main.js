@@ -52,7 +52,7 @@ const Main = ({token}) => {
       // change url to /dashboard/acceptstate
       navigate(`/dashboard/acceptstate`);
 
-      const response = await fetch("http://localhost:3001/api", {
+      const response = await fetch("https://spotify-playlist-generator-api-production.up.railway.app/api", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
