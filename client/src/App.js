@@ -30,8 +30,6 @@ function App() {
         </Routes>
       </div>
     </BrowserRouter>
-
-
     // code ? <Dashboard code={code} /> : <Login />
   )
 }
