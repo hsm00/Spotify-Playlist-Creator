@@ -69,7 +69,7 @@ const Main = ({token}) => {
 
       // set timeout to 5 seconds
       setTimeout(() => {
-        window.location.href = `http://localhost:3000/dashboard/${playlistId}`;
+        window.location.href = `https://aiplaylist.netlify.app/dashboard/${playlistId}`;
         setLoading(false);
       
       }, 5000);
