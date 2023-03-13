@@ -1,4 +1,5 @@
 Spotify Playlist Generator
+
 The Spotify Playlist Generator is an application that allows you to generate a playlist based on your mood, favorite genre, and artist using the Spotify API and the OpenAI API.
 
 How it Works
