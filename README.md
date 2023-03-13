@@ -10,4 +10,14 @@ The Spotify Playlist Generator is an web-application written in react and expres
 - If the user accepts the playlist, the application creates a new playlist in the user's Spotify account.
 
 
+### Installation
+- clone repository
+- go to /client
+- run `npm install`
+- run `npm start`
+- the frontend is now ready on `[localhost](http://localhost:3000/)`
 
+- now go to /server
+- run `npm start`
+- run `npm start`
+- the backend is now running on `[localhost](http://localhost:3001/)`
