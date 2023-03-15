@@ -6,7 +6,7 @@ The Spotify Playlist Generator is an web-application written in react and expres
 ## How to get access:
   URL = https://aiplaylist.netlify.app
   
-  Since the application is in development mode by on the Spotify side, I have to activate each user before they get to use it. 
+  Since the application is in development mode on the Spotify side, I have to activate each user before they get to use it. 
   Please send me a Email or message me on Discord and tell me your spotify email address so I can activate you.
     Discord: Hesam49er#7638
 
