@@ -4,7 +4,7 @@
 The Spotify Playlist Generator is an web-application written in react and express.js that allows you to generate a playlist based on your mood, favorite genre, and artist using the Spotify API and the OpenAI API.
 
 ## How to get access:
-  URL = https://aiplaylist.netlify.app/
+  URL = https://aiplaylist.netlify.app \n
   Since the application is in development mode by on the Spotify side, I have to activate each user before they get to use it. 
   Please send me a Email or message me on Discord and tell me your spotify email address so I can activate you.
     Discord: Hesam49er#7638
