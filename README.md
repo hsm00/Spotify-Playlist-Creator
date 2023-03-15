@@ -30,6 +30,6 @@ The Spotify Playlist Generator is an web-application written in react and expres
 - the frontend is now ready on `[localhost](http://localhost:3000/)`
 
 - now go to /server
-- run `npm start`
+- run `npm install`
 - run `npm start`
 - the backend is now running on `[localhost](http://localhost:3001/)`
