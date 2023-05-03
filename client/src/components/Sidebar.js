@@ -14,7 +14,7 @@ const Sidebar = ({playlists}) => {
     setIsOpen(!isOpen);
   };
 
-  const matches = useMediaQuery('(max-width:500px)');
+  const matches = useMediaQuery('(max-width:300px)');
 
   // create a useEffect which runs only by the first render
     useEffect(() => {
