@@ -49,6 +49,7 @@ const Main = ({token}) => {
         headers: {
           "Content-Type": "application/json",
         },
+        mode: "no-cors",
         body: JSON.stringify({
           message: message,
         }),
