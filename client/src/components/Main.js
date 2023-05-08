@@ -40,35 +40,28 @@ const Main = ({token}) => {
       const message = `create a playlist with songs that match the following: mood= ${mood} genre= ${genre} favorite artist: ${favoriteArtist} with 10 songs`;
       setChatLog((prevChatLog) => [...prevChatLog, { user: "me", message: message }]);
       setInput("");
-    
+      
       // change url to /dashboard/acceptstate
       navigate(`/dashboard/acceptstate`);
-    
-      try {
-        const response = await fetch("https://spotify-playlist-generator-api-production.up.railway.app/api", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          mode: "cors",
-          credentials: "include",
-          body: JSON.stringify({
-            message: message,
-          }),
-        });
-    
-        if (!response.ok) {
-          throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
-        }
-    
-        const data = await response.json();
-        setSongsToCheck(data);
-        console.log(openAiSongs);
-      } catch (error) {
-        console.error(error);
-      }
+
+      const response = await fetch("https://spotify-playlist-generator-api-production.up.railway.app/api", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "no-cors",
+        body: JSON.stringify({
+          message: message,
+        }),
+      });
+      
+      
+      
+      const data = await response.json();
+      setSongsToCheck(data);
+      console.log(openAiSongs);
+      
     };
-    
     
     async function handleAcceptState(e) {
       e.preventDefault();
