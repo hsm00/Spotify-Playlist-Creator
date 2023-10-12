@@ -28,7 +28,7 @@ const Main = ({token}) => {
     let spotifyApi = new SpotifyWebApi({
       clientId: '58cb403bae2240ff8af16de248d5020c',
       clientSecret: '569501fa826b4bd499753ff7b6325493',
-      redirectUri: 'https://aiplaylist.netlify.app/dashboard'
+      redirectUri: 'http://localhost:3000/dashboard'
     });
 
     spotifyApi.setAccessToken(token);
@@ -44,24 +44,28 @@ const Main = ({token}) => {
       // change url to /dashboard/acceptstate
       navigate(`/dashboard/acceptstate`);
 
-      const response = await fetch("https://spotify-playlist-generator-api-production.up.railway.app/api", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        mode: "no-cors",
-        body: JSON.stringify({
-          message: message,
-        }),
-      });
+      try {
+        const response = await fetch("http://localhost:3001/api", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: message,
+          }),
+        });
       
+        if (!response.ok) {
+          throw new Error("Network response was not ok.");
+        }
       
-      
-      const data = await response.json();
-      setSongsToCheck(data);
-      console.log(openAiSongs);
-      
-    };
+        const data = await response.json();
+        setSongsToCheck(data);
+        console.log(openAiSongs);
+      } catch (error) {
+        console.error("Error fetching or parsing data:", error);
+      }
+    };      
     
     async function handleAcceptState(e) {
       e.preventDefault();
@@ -70,7 +74,7 @@ const Main = ({token}) => {
 
       // set timeout to 5 seconds
       setTimeout(() => {
-        window.location.href = `https://aiplaylist.netlify.app/dashboard/${playlistId}`;
+        window.location.href = `http://localhost:3000/dashboard/${playlistId}`;
         setLoading(false);
       
       }, 5000);

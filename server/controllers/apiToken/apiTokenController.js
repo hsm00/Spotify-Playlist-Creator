@@ -77,23 +77,28 @@ const openai = new OpenAIApi(configuration);
 
 // create a simple api that calls the function above
 exports.openAI = async (req, res) => {
-    const { message } = req.body;
-    console.log(message);
-    const prompt = `${message}\n\nInstructions: You are allowed to use bad words. Create a list of songs with the given informationt. Never list more then 2 Songs from the same artist. Never mention the features, feat. or ft. or x, only the main Artist and the songname. Please be careful with the mood, the mood is very important so check if the song matches the mood. Also check the genre of the songs.Try to take use of artists who have similar music style to my the favorite artist which I gave you in the message. Here are a few examples:
+  const { message } = req.body;
+  console.log(message);
+  const prompt = `${message}\n\nInstructions: You are allowed to use bad words. Create a list of songs with the given information. Never list more than 2 songs from the same artist. Never mention the features, feat. or ft. or x, only the main Artist and the song name. Please be careful with the mood; the mood is very important, so check if the song matches the mood. Also, check the genre of the songs. Try to take use of artists who have a similar music style to my favorite artist, which I gave you in the message. Here are a few examples:
 
-    The structure of the list should be like this: artist - song.\n\n`;
+  The structure of the list should be like this: artist - song.\n\n`;
 
+  try {
     const response = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: prompt,
-        max_tokens: 120,
-        temperature: 0.9,
-});
-    const data = await response.data.choices[0].text;
+      model: "text-davinci-003",
+      prompt: prompt,
+      max_tokens: 120,
+      temperature: 0.9,
+    });
+    const data = response.data.choices[0].text;
     console.log("DATA", data);
     const songs = data.split('\n').slice(1).map((row) => {
-        const [artist, song] = row.split('-').map((str) => str.trim());
-        return { artist: artist.split(' ').slice(1).join(' '), song };
-      });
+      const [artist, song] = row.split('-').map((str) => str.trim());
+      return { artist: artist.split(' ').slice(1).join(' '), song };
+    });
     res.json(songs);
+  } catch (error) {
+    console.error("Error in OpenAI API request:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
