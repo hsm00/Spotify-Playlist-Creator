@@ -6,7 +6,7 @@ The Spotify Playlist Generator is an web-application written in react and expres
 ## How to get access:  
   Since the application is in development mode on the Spotify side, I have to activate each user before they get to use it. 
   Please send me a Email or message me on Discord and tell me your spotify email address so I can activate you.
-    Discord: Hesam49er#7638
+    Discord: Hesam49er
 
 ## How it Works
 - The user is asked to input their mood, favorite genre, and artist.
